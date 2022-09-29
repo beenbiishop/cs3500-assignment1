@@ -27,18 +27,29 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
     String state = "";
     for (int row = 0; row < this.model.getBoardSize(); row++) {
       for (int col = 0; col < this.model.getBoardSize(); col++) {
+        int firstRowCol = (this.model.getBoardSize() - 1) / 3;
+        int lastRowCol = (2 * (this.model.getBoardSize() - 1)) / 3;
         switch (this.model.getSlotAt(row, col)) {
           case Marble:
             state += "O";
             break;
           case Invalid:
-            state += " ";
+            if (row < firstRowCol && col < lastRowCol) {
+              state += " ";
+            } else if (row > lastRowCol && col < lastRowCol) {
+              state += " ";
+            }
             break;
           case Empty:
             state += "_";
             break;
         }
-        if (col != this.model.getBoardSize() - 1) {
+        if (row < firstRowCol && col < lastRowCol) {
+          state += " ";
+        } else if (row > lastRowCol && col < lastRowCol) {
+          state += " ";
+        } else if (row >= firstRowCol && row <= lastRowCol && col < (this.model.getBoardSize()
+            - 1)) {
           state += " ";
         }
       }
