@@ -1,16 +1,18 @@
-package cs3500.marblesolitaire.model.hw02;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import cs3500.marblesolitaire.model.hw02.EnglishSolitaireModel;
+import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModel;
+import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModelState;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EnglishSolitaireModelTest {
 
   @Test
   public void getBoardSize() {
-    assertEquals(1, new EnglishSolitaireModel(1).getBoardSize());
+    Assert.assertEquals(1, new EnglishSolitaireModel(1).getBoardSize());
     assertEquals(7, new EnglishSolitaireModel(3).getBoardSize());
     assertEquals(13, new EnglishSolitaireModel(5).getBoardSize());
     assertEquals(19, new EnglishSolitaireModel(7).getBoardSize());
@@ -18,7 +20,7 @@ public class EnglishSolitaireModelTest {
 
   @Test
   public void getSlotAt() {
-    assertEquals(MarbleSolitaireModelState.SlotState.Empty,
+    Assert.assertEquals(MarbleSolitaireModelState.SlotState.Empty,
         new EnglishSolitaireModel(1).getSlotAt(0, 0));
     assertEquals(MarbleSolitaireModelState.SlotState.Invalid,
         new EnglishSolitaireModel(5).getSlotAt(1, 1));

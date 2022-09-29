@@ -2,8 +2,8 @@ package cs3500.marblesolitaire.model.hw02;
 
 /**
  * Represents a marble solitaire game with the English rules.
- * <p>
- * The class will instantiate the game/board.
+ *
+ * <p>The class will instantiate the game/board.
  */
 public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
@@ -86,8 +86,8 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * Initializes each slot's state on the board.
-   * <p>
-   * Valid slots are set to Marble. Invalid slots are set to Invalid. The starting empty slot is
+   *
+   * <p>Valid slots are set to Marble. Invalid slots are set to Invalid. The starting empty slot is
    * overridden to Empty.
    */
   private void initializeBoard() {

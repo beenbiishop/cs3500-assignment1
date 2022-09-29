@@ -1,9 +1,9 @@
-package cs3500.marblesolitaire.view;
-
 import static org.junit.Assert.assertEquals;
 
 import cs3500.marblesolitaire.model.hw02.EnglishSolitaireModel;
 import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModel;
+import cs3500.marblesolitaire.view.MarbleSolitaireTextView;
+import cs3500.marblesolitaire.view.MarbleSolitaireView;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class MarbleSolitaireTextViewTest {
   MarbleSolitaireView viewArmThickness5;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     armThickness3 = new EnglishSolitaireModel(3);
     armThickness5 = new EnglishSolitaireModel(5);
     viewArmThickness3 = new MarbleSolitaireTextView(armThickness3);
