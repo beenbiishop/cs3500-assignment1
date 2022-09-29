@@ -3,7 +3,7 @@ package cs3500.marblesolitaire.model.hw02;
 /**
  * Represents a marble solitaire game with the English rules.
  * <p>
- * The class will instantiate the game/board, handle moves from the player.
+ * The class will instantiate the game/board.
  */
 public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
@@ -177,6 +177,18 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
         && this.getSlotAt(midRow, midCol) == SlotState.Marble;
   }
 
+  // TODO: Add javadoc
+
+  /**
+   * Returns whether a move from a given slot position to a given slot position is valid.
+   *
+   * @param fromRow the row number of the position to be moved from (starts at 0)
+   * @param fromCol the column number of the position to be moved from (starts at 0)
+   * @param toRow   the row number of the position to be moved to (starts at 0)
+   * @param toCol   the column number of the position to be moved to (starts at 0)
+   * @throws IllegalArgumentException if the given from position and given to position results in an
+   *                                  invalid move
+   */
   @Override
   public void move(int fromRow, int fromCol, int toRow, int toCol) throws IllegalArgumentException {
     if (!this.isValidMove(fromRow, fromCol, toRow, toCol)) {
