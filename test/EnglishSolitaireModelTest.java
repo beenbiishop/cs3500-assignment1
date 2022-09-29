@@ -8,6 +8,9 @@ import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModelState;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Tests for the EnglishSolitaireModel class and its methods.
+ */
 public class EnglishSolitaireModelTest {
 
   @Test
