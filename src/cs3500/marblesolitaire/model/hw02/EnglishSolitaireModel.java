@@ -10,7 +10,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
   private final int armThickness;
   private final int sRow;
   private final int sCol;
-  private SlotState[][] board;
+  private final SlotState[][] board;
 
   /**
    * Constructs a new model with the default arm thickness of 3 and the empty slot in the center.
@@ -53,8 +53,8 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
       throw new IllegalArgumentException("Arm thickness must be a positive odd number");
     }
     this.armThickness = armThickness;
-    this.sRow = (armThickness - 1) / 2;
-    this.sCol = (armThickness - 1) / 2;
+    this.sRow = (this.getBoardSize() - 1) / 2;
+    this.sCol = (this.getBoardSize() - 1) / 2;
     this.board = new SlotState[this.getBoardSize()][this.getBoardSize()];
     this.initializeBoard();
   }
@@ -87,21 +87,20 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
   /**
    * Initializes each slot's state on the board.
    * <p>
-   * Invalid slots are set to Invalid. Valid slots are set to Empty if they are the starting empty
-   * slot, otherwise they are set to Marble.
+   * Valid slots are set to Marble. Invalid slots are set to Invalid. The starting empty slot is
+   * overridden to Empty.
    */
   private void initializeBoard() {
     for (int row = 0; row < this.getBoardSize(); row++) {
       for (int col = 0; col < this.getBoardSize(); col++) {
-        if (row == this.sRow && col == this.sCol) {
-          this.board[row][col] = SlotState.Empty;
-        } else if (this.isValidSlot(row, col)) {
+        if (this.isValidSlot(row, col)) {
           this.board[row][col] = SlotState.Marble;
         } else {
           this.board[row][col] = SlotState.Invalid;
         }
       }
     }
+    this.board[this.sRow][this.sCol] = SlotState.Empty;
   }
 
   /**
@@ -113,8 +112,12 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    * @return true if the slot position is valid, false otherwise
    */
   private boolean isValidSlotArmThickness(int row, int col, int armThickness) {
-    return ((!(armThickness - 1 > col) && !(armThickness * 2 - 2 < col)) || (
-        !(armThickness - 1 > row) && !(armThickness * 2 - 2 < row)));
+    int armFirstRowCol = armThickness - 1;
+    int armLastRowCol = armThickness * 2 - 2;
+    int boardSize = armThickness * 3 - 2;
+    return row >= 0 && col >= 0 && row < boardSize && col < boardSize && (
+        (row >= armFirstRowCol && row <= armLastRowCol) || (col >= armFirstRowCol
+            && col <= armLastRowCol));
   }
 
   /**
@@ -130,12 +133,12 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   @Override
   public int getBoardSize() {
-    return this.armThickness + (this.armThickness - 1) * 2;
+    return this.armThickness * 3 - 2;
   }
 
   @Override
   public SlotState getSlotAt(int row, int col) throws IllegalArgumentException {
-    if (!this.isValidSlot(row, col)) {
+    if (row < 0 || col < 0 || row >= this.getBoardSize() || col >= this.getBoardSize()) {
       throw new IllegalArgumentException("Slot position is beyond board dimensions");
     }
     return this.board[row][col];
@@ -154,34 +157,34 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     return score;
   }
 
+  /**
+   * Returns whether a move from a given slot position to a given slot position is valid.
+   *
+   * @param fromRow the row of the slot to move from
+   * @param fromCol the column of the slot to move from
+   * @param toRow   the row of the slot to move to
+   * @param toCol   the column of the slot to move to
+   * @return true if the move is valid, false otherwise
+   */
+  private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
+    int horDiff = Math.abs(fromRow - toRow);
+    int verDiff = Math.abs(fromCol - toCol);
+    int midRow = (fromRow + toRow) / 2;
+    int midCol = (fromCol + toCol) / 2;
+    return this.isValidSlot(fromRow, fromCol) && this.isValidSlot(toRow, toCol)
+        && this.getSlotAt(fromRow, fromCol) == SlotState.Marble
+        && this.getSlotAt(toRow, toCol) == SlotState.Empty && (horDiff == 2 ^ verDiff == 2)
+        && this.getSlotAt(midRow, midCol) == SlotState.Marble;
+  }
+
   @Override
   public void move(int fromRow, int fromCol, int toRow, int toCol) throws IllegalArgumentException {
-    if (!this.isValidSlot(fromRow, fromCol)) {
-      throw new IllegalArgumentException("From slot position is beyond board dimensions");
-    }
-    if (!this.isValidSlot(toRow, toCol)) {
-      throw new IllegalArgumentException("To slot position is beyond board dimensions");
-    }
-    if (this.getSlotAt(fromRow, fromCol) != SlotState.Marble) {
-      throw new IllegalArgumentException("No marble at from slot position");
-    }
-    if (this.getSlotAt(toRow, toCol) != SlotState.Empty) {
-      throw new IllegalArgumentException("To slot position is not empty: " + this.getSlotAt(toRow,
-          toCol));
-    }
-    int rowDifference = Math.abs(fromRow - toRow);
-    int columnDifference = Math.abs(fromCol - toCol);
-    if (rowDifference != 2 && columnDifference != 2) {
-      throw new IllegalArgumentException("A marble must move exactly two positions");
-    }
-    if (rowDifference == 2 && columnDifference == 2) {
-      throw new IllegalArgumentException("A marble must move in only one direction");
+    if (!this.isValidMove(fromRow, fromCol, toRow, toCol)) {
+      throw new IllegalArgumentException(
+          "Invalid move from (" + fromRow + "," + fromCol + ") to (" + toRow + "," + toCol + ")");
     }
     int midRow = (fromRow + toRow) / 2;
     int midCol = (fromCol + toCol) / 2;
-    if (this.getSlotAt(midRow, midCol) != SlotState.Marble) {
-      throw new IllegalArgumentException("No marble to jump over");
-    }
     this.board[fromRow][fromCol] = SlotState.Empty;
     this.board[midRow][midCol] = SlotState.Empty;
     this.board[toRow][toCol] = SlotState.Marble;
@@ -192,20 +195,16 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     for (int row = 0; row < this.getBoardSize(); row++) {
       for (int col = 0; col < this.getBoardSize(); col++) {
         if (this.getSlotAt(row, col) == SlotState.Marble) {
-          if (this.isValidSlot(row - 2, col) && this.getSlotAt(row - 2, col) == SlotState.Empty
-              && this.getSlotAt(row - 1, col) == SlotState.Marble) {
+          if (this.isValidMove(row, col, row + 2, col)) {
             return false;
           }
-          if (this.isValidSlot(row + 2, col) && this.getSlotAt(row + 2, col) == SlotState.Empty
-              && this.getSlotAt(row + 1, col) == SlotState.Marble) {
+          if (this.isValidMove(row, col, row - 2, col)) {
             return false;
           }
-          if (this.isValidSlot(row, col - 2) && this.getSlotAt(row, col - 2) == SlotState.Empty
-              && this.getSlotAt(row, col - 1) == SlotState.Marble) {
+          if (this.isValidMove(row, col, row, col + 2)) {
             return false;
           }
-          if (this.isValidSlot(row, col + 2) && this.getSlotAt(row, col + 2) == SlotState.Empty
-              && this.getSlotAt(row, col + 1) == SlotState.Marble) {
+          if (this.isValidMove(row, col, row, col - 2)) {
             return false;
           }
         }
