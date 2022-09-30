@@ -28,13 +28,26 @@ public class MarbleSolitaireTextViewTest {
   @Test
   public void testToString() {
     assertEquals(
-        "    O O O\n" + "    O O O\n" + "O O O O O O O\n" + "O O O _ O O O\n" + "O O O O O O O\n"
-            + "    O O O\n" + "    O O O", viewArmThickness3.toString());
-    assertEquals("        O O O O O\n" + "        O O O O O\n" + "        O O O O O\n"
-        + "        O O O O O\n" + "O O O O O O O O O O O O O\n" + "O O O O O O O O O O O O O\n"
-        + "O O O O O O _ O O O O O O\n" + "O O O O O O O O O O O O O\n"
-        + "O O O O O O O O O O O O O\n" + "        O O O O O\n" + "        O O O O O\n"
-        + "        O O O O O\n" + "        O O O O O", viewArmThickness5.toString());
+        "    O O O\n"
+            + "    O O O\n"
+            + "O O O O O O O\n"
+            + "O O O _ O O O\n"
+            + "O O O O O O O\n"
+            + "    O O O\n"
+            + "    O O O", viewArmThickness3.toString());
+    assertEquals("        O O O O O\n"
+        + "        O O O O O\n"
+        + "        O O O O O\n"
+        + "        O O O O O\n"
+        + "O O O O O O O O O O O O O\n"
+        + "O O O O O O O O O O O O O\n"
+        + "O O O O O O _ O O O O O O\n"
+        + "O O O O O O O O O O O O O\n"
+        + "O O O O O O O O O O O O O\n"
+        + "        O O O O O\n"
+        + "        O O O O O\n"
+        + "        O O O O O\n"
+        + "        O O O O O", viewArmThickness5.toString());
 
   }
 }

@@ -24,39 +24,36 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
 
   @Override
   public String toString() {
-    String state = "";
+    StringBuilder state = new StringBuilder();
     for (int row = 0; row < this.model.getBoardSize(); row++) {
       for (int col = 0; col < this.model.getBoardSize(); col++) {
         int firstRowCol = (this.model.getBoardSize() - 1) / 3;
         int lastRowCol = (2 * (this.model.getBoardSize() - 1)) / 3;
         switch (this.model.getSlotAt(row, col)) {
           case Marble:
-            state += "O";
+            state.append("O");
             break;
           case Invalid:
-            if (row < firstRowCol && col < lastRowCol) {
-              state += " ";
-            } else if (row > lastRowCol && col < lastRowCol) {
-              state += " ";
+            if ((row < firstRowCol && col < lastRowCol) || (row > lastRowCol && col < lastRowCol)) {
+              state.append(" ");
             }
             break;
           case Empty:
-            state += "_";
+            state.append("_");
             break;
+          default:
+            throw new IllegalStateException("Invalid slot state");
         }
-        if (row < firstRowCol && col < lastRowCol) {
-          state += " ";
-        } else if (row > lastRowCol && col < lastRowCol) {
-          state += " ";
-        } else if (row >= firstRowCol && row <= lastRowCol && col < (this.model.getBoardSize()
-            - 1)) {
-          state += " ";
+        if ((row < firstRowCol && col < lastRowCol) || (row > lastRowCol && col < lastRowCol) || (
+            row >= firstRowCol && row <= lastRowCol && col < (this.model.getBoardSize()
+                - 1))) {
+          state.append(" ");
         }
       }
       if (row != this.model.getBoardSize() - 1) {
-        state += "\n";
+        state.append("\n");
       }
     }
-    return state;
+    return state.toString();
   }
 }

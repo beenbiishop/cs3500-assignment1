@@ -33,7 +33,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    */
   public EnglishSolitaireModel(int sRow, int sCol) throws IllegalArgumentException {
     if (!isValidSlotArmThickness(sRow, sCol, 3)) {
-      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + "," + sCol + ")");
+      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + ", " + sCol + ")");
     }
     this.armThickness = 3;
     this.sRow = sRow;
@@ -75,7 +75,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
       throw new IllegalArgumentException("Arm thickness must be a positive odd number");
     }
     if (!isValidSlotArmThickness(sRow, sCol, armThickness)) {
-      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + "," + sCol + ")");
+      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + ", " + sCol + ")");
     }
     this.armThickness = armThickness;
     this.sRow = sRow;
@@ -193,7 +193,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
   public void move(int fromRow, int fromCol, int toRow, int toCol) throws IllegalArgumentException {
     if (!this.isValidMove(fromRow, fromCol, toRow, toCol)) {
       throw new IllegalArgumentException(
-          "Invalid move from (" + fromRow + "," + fromCol + ") to (" + toRow + "," + toCol + ")");
+          "Invalid move from (" + fromRow + ", " + fromCol + ") to (" + toRow + ", " + toCol + ")");
     }
     int midRow = (fromRow + toRow) / 2;
     int midCol = (fromCol + toCol) / 2;
