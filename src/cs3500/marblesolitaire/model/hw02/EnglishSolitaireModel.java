@@ -3,7 +3,23 @@ package cs3500.marblesolitaire.model.hw02;
 /**
  * Represents a marble solitaire game with the English rules.
  *
- * <p>The class will instantiate the game/board.
+ * <p>The class will instantiate the game/board based on three given parameters:
+ * <ol>
+ *   <li>The arm thickness</li>
+ *   <li>The empty slot row</li>
+ *   <li>The empty slot column</li>
+ * </ol>
+ * The user must either specify no parameters, just the arm thickness, just the empty slot
+ * position, or all three. The class will then initialize a new board with the given parameters,
+ * and return an exception error if any of the parameters are invalid.
+ * </p>
+ * <p>
+ *   After initialization, the class will then handle the logic of any moves made by the user. The
+ *   user can move a marble by specifying a starting and ending position. The user can also get
+ *   the size of the board, get the state of a slot on the board, get the current score of the
+ *   game, and check if the game is over. Though the user will never directly interact with this
+ *   class, it will be used by the controller to handle the logic of the game.
+ * </p>
  */
 public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
@@ -33,7 +49,8 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    */
   public EnglishSolitaireModel(int sRow, int sCol) throws IllegalArgumentException {
     if (!isValidSlotArmThickness(sRow, sCol, 3)) {
-      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + ", " + sCol + ")");
+      throw new IllegalArgumentException(
+          "Invalid empty cell position (" + sRow + ", " + sCol + ")");
     }
     this.armThickness = 3;
     this.sRow = sRow;
@@ -75,7 +92,8 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
       throw new IllegalArgumentException("Arm thickness must be a positive odd number");
     }
     if (!isValidSlotArmThickness(sRow, sCol, armThickness)) {
-      throw new IllegalArgumentException("Invalid empty cell position (" + sRow + ", " + sCol + ")");
+      throw new IllegalArgumentException(
+          "Invalid empty cell position (" + sRow + ", " + sCol + ")");
     }
     this.armThickness = armThickness;
     this.sRow = sRow;
@@ -88,7 +106,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    * Initializes each slot's state on the board.
    *
    * <p>Valid slots are set to Marble. Invalid slots are set to Invalid. The starting empty slot is
-   * overridden to Empty.
+   * overridden to Empty.</p>
    */
   private void initializeBoard() {
     for (int row = 0; row < this.getBoardSize(); row++) {
@@ -131,11 +149,25 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     return isValidSlotArmThickness(row, col, this.armThickness);
   }
 
+  /**
+   * Return the size of this board. The size is roughly the longest dimension of a board
+   *
+   * @return the size as an integer
+   */
   @Override
   public int getBoardSize() {
     return this.armThickness * 3 - 2;
   }
 
+  /**
+   * Get the state of the slot at a given position on the board.
+   *
+   * @param row the row of the position sought, starting at 0
+   * @param col the column of the position sought, starting at 0
+   * @return the state of the slot at the given row and column
+   * @throws IllegalArgumentException if the row or the column are beyond the dimensions of the
+   *                                  board
+   */
   @Override
   public SlotState getSlotAt(int row, int col) throws IllegalArgumentException {
     if (row < 0 || col < 0 || row >= this.getBoardSize() || col >= this.getBoardSize()) {
@@ -144,6 +176,11 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     return this.board[row][col];
   }
 
+  /**
+   * Return the number of marbles currently on the board.
+   *
+   * @return the number of marbles currently on the board
+   */
   @Override
   public int getScore() {
     int score = 0;
@@ -177,8 +214,6 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
         && this.getSlotAt(midRow, midCol) == SlotState.Marble;
   }
 
-  // TODO: Add javadoc
-
   /**
    * Returns whether a move from a given slot position to a given slot position is valid.
    *
@@ -202,6 +237,11 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     this.board[toRow][toCol] = SlotState.Marble;
   }
 
+  /**
+   * Determine and return if the game is over or not. A game is over if no more moves can be made.
+   *
+   * @return true if the game is over, false otherwise
+   */
   @Override
   public boolean isGameOver() {
     for (int row = 0; row < this.getBoardSize(); row++) {

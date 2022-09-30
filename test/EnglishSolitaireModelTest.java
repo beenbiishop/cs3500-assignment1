@@ -216,7 +216,6 @@ public class EnglishSolitaireModelTest {
     noParams.move(4, 5, 4, 3);
     noParams.move(4, 3, 2, 3);
     noParams.move(1, 3, 3, 3);
-    assertEquals(1, noParams.getScore());
     assertTrue(noParams.isGameOver());
   }
 }
